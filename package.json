@@ -8,6 +8,9 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
+    "build:lib:dev": "ng build ngx-row-accordion",
+    "build:lib:prod": "ng build ngx-row-accordion --prod",
+    "build:lib:watch": "onchange 'projects/**/*.{ts,html,scss}' -- yarn run build:lib:dev",
     "prettier:base-files": "prettier \"./{e2e,cypress,src,projects}/**/*.{scss,ts}\"",
     "prettier:fix": "yarn run prettier:base-files --write",
     "prettier:check": "yarn run prettier:base-files --list-different"
@@ -45,6 +48,7 @@
     "karma-jasmine": "~1.1.1",
     "karma-jasmine-html-reporter": "^0.2.2",
     "ng-packagr": "^3.0.0-rc.2",
+    "onchange": "4.0.0",
     "prettier": "1.12.1",
     "protractor": "~5.3.0",
     "ts-node": "~5.0.1",
