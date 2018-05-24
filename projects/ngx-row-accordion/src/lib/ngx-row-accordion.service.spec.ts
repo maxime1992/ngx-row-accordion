@@ -5,11 +5,14 @@ import { NgxRowAccordionService } from './ngx-row-accordion.service';
 describe('NgxRowAccordionService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [NgxRowAccordionService]
+      providers: [NgxRowAccordionService],
     });
   });
 
-  it('should be created', inject([NgxRowAccordionService], (service: NgxRowAccordionService) => {
-    expect(service).toBeTruthy();
-  }));
+  it(
+    'should be created',
+    inject([NgxRowAccordionService], (service: NgxRowAccordionService) => {
+      expect(service).toBeTruthy();
+    })
+  );
 });

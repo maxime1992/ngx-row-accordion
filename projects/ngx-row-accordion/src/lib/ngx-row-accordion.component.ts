@@ -7,13 +7,10 @@ import { Component, OnInit } from '@angular/core';
       ngx-row-accordion works!
     </p>
   `,
-  styles: []
+  styles: [],
 })
 export class NgxRowAccordionComponent implements OnInit {
+  constructor() {}
 
-  constructor() { }
-
-  ngOnInit() {
-  }
-
+  ngOnInit() {}
 }

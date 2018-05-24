@@ -8,9 +8,8 @@ describe('NgxRowAccordionComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ NgxRowAccordionComponent ]
-    })
-    .compileComponents();
+      declarations: [NgxRowAccordionComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

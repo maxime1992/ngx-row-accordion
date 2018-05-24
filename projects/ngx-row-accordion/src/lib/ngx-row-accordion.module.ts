@@ -2,9 +2,8 @@ import { NgModule } from '@angular/core';
 import { NgxRowAccordionComponent } from './ngx-row-accordion.component';
 
 @NgModule({
-  imports: [
-  ],
+  imports: [],
   declarations: [NgxRowAccordionComponent],
-  exports: [NgxRowAccordionComponent]
+  exports: [NgxRowAccordionComponent],
 })
-export class NgxRowAccordionModule { }
+export class NgxRowAccordionModule {}
