@@ -6,7 +6,7 @@ import { NgxRowAccordionModule } from 'ngx-row-accordion';
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [BrowserModule, NgxRowAccordionModule],
+  imports: [BrowserModule, NgxRowAccordionModule.forRoot()],
   providers: [],
   bootstrap: [AppComponent],
 })
