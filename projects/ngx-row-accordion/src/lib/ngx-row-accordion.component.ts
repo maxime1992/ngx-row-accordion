@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'lib-ngx-row-accordion',
+  selector: 'ngx-row-accordion',
   template: `
     <p>
       ngx-row-accordion works!
