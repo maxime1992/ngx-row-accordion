@@ -1,8 +1,7 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { NgxRowAccordionModule } from 'ngx-row-accordion';
 import { PageTwoComponent } from './page-two/page-two.component';
 import { Routes, RouterModule } from '@angular/router';
+import { SharedModule } from '../../shared/shared.module';
 
 const routes: Routes = [
   {
@@ -18,7 +17,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [CommonModule, RouterModule.forChild(routes), NgxRowAccordionModule],
+  imports: [ RouterModule.forChild(routes), SharedModule],
   declarations: [PageTwoComponent],
 })
 export class Page2Module {}

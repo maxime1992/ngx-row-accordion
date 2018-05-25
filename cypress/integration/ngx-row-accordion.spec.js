@@ -55,4 +55,65 @@ describe('Ngx row accordion', () => {
       .contains('Page 1 content')
       .should('not.exist');
   });
+
+  it('should be able to fold the first accordion after opening page 2, re-opening page 1, opening page 3', () => {
+    cy.openFirstAccordion();
+
+    cy
+      .get('app-page-one .body a')
+      .contains('Open page 2')
+      .click();
+
+    cy
+      .get('app-page-one .title')
+      .contains('Page 1 title')
+      .click();
+    cy.get('app-page-one .body').contains('Page 1 content');
+
+    cy
+      .get('app-page-two .body a')
+      .contains('Open page 3')
+      .click();
+
+    cy
+      .get('app-page-two .body')
+      .contains('Page 2 content')
+      .should('not.exist');
+
+    cy
+      .get('app-page-one .title')
+      .contains('Page 1 title')
+      .click();
+    cy
+      .get('app-page-one .body')
+      .contains('Page 1 content')
+      .should('not.exist');
+  });
+
+  it('should keep page 1 opened after going to page 2, opening page 1 again, opening page 3', () => {
+    cy.openFirstAccordion();
+
+    cy
+      .get('app-page-one .body a')
+      .contains('Open page 2')
+      .click();
+
+    cy
+      .get('app-page-one .title')
+      .contains('Page 1 title')
+      .click();
+
+    cy
+      .get('app-page-two .body a')
+      .contains('Open page 3')
+      .click();
+
+    cy.get('app-page-one .body').contains('Page 1 content');
+  });
+
+  // it('should ', () => {
+  // });
+
+  // it('should ', () => {
+  // });
 });

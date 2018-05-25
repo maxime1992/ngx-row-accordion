@@ -1,63 +1,88 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
-import { filter, mapTo, map } from 'rxjs/operators';
+import { filter, mapTo, map, delay } from 'rxjs/operators';
 import { NgxRowAccordionComponent } from './ngx-row-accordion.component';
 import { mapChildrenIntoArray } from '@angular/router/src/url_tree';
 
-type Group = Map<NgxRowAccordionComponent, undefined>;
+interface AccordionState {
+  folded: boolean;
+}
 
-@Injectable({
-  providedIn: 'root',
-})
+interface AccordionGroup {
+  // reference to every accordions of the group (to access them by reference)
+  map: Map<NgxRowAccordionComponent, AccordionState>;
+  // array containing the elements to keep track of the order (to access them by order)
+  array: NgxRowAccordionComponent[];
+  // subject to broadcast the index of new element added to that group
+  onAdd$: Subject<{ groupName: string; index: number }>;
+  // subject to broadcast the index of element removed from that group
+  onDelete$: Subject<{ groupName: string; index: number }>;
+}
+
+@Injectable({ providedIn: 'root' })
 export class NgxRowAccordionService {
-  private groups: Map<string, Group> = new Map();
+  private groups: Map<string, AccordionGroup> = new Map();
   private componentToGroup: Map<NgxRowAccordionComponent, string> = new Map();
-  private _onAddInGroup$: Subject<string> = new Subject();
-  private _onRemoveInGroup$: Subject<{ name: string; index: number }> = new Subject();
-
-  constructor() {}
 
   private addGroupIfDoesNotExists(groupName: string): void {
-    if (!this.groups.has(groupName)) {
-      this.groups.set(groupName, new Map());
+    if (this.groups.has(groupName)) {
+      return;
     }
+
+    const group: AccordionGroup = {
+      map: new Map(),
+      array: [],
+      onAdd$: new Subject(),
+      onDelete$: new Subject(),
+    };
+
+    this.groups.set(groupName, group);
   }
 
   addComponentToGroup(componentRef: NgxRowAccordionComponent, groupName: string): number {
     this.addGroupIfDoesNotExists(groupName);
 
-    const group: Group = this.groups.get(groupName);
+    const group: AccordionGroup = this.groups.get(groupName);
 
-    if (group.has(componentRef)) {
+    if (group.map.has(componentRef)) {
       throw new Error('A row-accordion should be registered only once');
     }
 
-    group.set(componentRef, undefined);
-
+    group.map.set(componentRef, { folded: false });
+    group.array.push(componentRef);
     this.componentToGroup.set(componentRef, groupName);
 
-    this._onAddInGroup$.next(groupName);
+    const index = group.map.size - 1;
+    group.onAdd$.next({ groupName, index: index });
 
-    return group.size - 1;
+    return index;
   }
 
   removeComponentFromGroup(componentRef: NgxRowAccordionComponent) {
     const groupName: string = this.componentToGroup.get(componentRef);
+    this.groups.get(groupName).map.delete(componentRef);
+    this.groups.get(groupName).array = this.groups.get(groupName).array.filter(x => x !== componentRef);
+    this.groups.get(groupName).onDelete$.next({ groupName, index: this.groups.get(groupName).map.size });
 
-    this.groups.get(groupName).delete(componentRef);
+    if (this.groups.get(groupName).map.size === 0) {
+      this.groups.get(groupName).onAdd$.complete();
+      this.groups.get(groupName).onDelete$.complete();
 
-    this._onRemoveInGroup$.next({ name: groupName, index: this.groups.get(groupName).size });
-
-    if (this.groups.get(groupName).size === 0) {
       this.groups.delete(groupName);
     }
   }
 
-  onAddInGroup(groupName: string): Observable<void> {
-    return this._onAddInGroup$.pipe(filter(gName => gName === groupName), mapTo(undefined));
+  onAddInGroup(groupName: string): Observable<number> {
+    return this.groups
+      .get(groupName)
+      .onAdd$.asObservable()
+      .pipe(map(x => x.index), delay(0));
   }
 
   onRemoveInGroup(groupName: string): Observable<number> {
-    return this._onRemoveInGroup$.pipe(filter(({ name, index }) => name === groupName), map(({ index }) => index));
+    return this.groups
+      .get(groupName)
+      .onDelete$.asObservable()
+      .pipe(map(x => x.index), delay(0));
   }
 }

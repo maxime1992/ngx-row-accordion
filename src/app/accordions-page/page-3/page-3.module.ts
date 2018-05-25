@@ -1,8 +1,7 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { NgxRowAccordionModule } from 'ngx-row-accordion';
 import { Routes, RouterModule } from '@angular/router';
 import { PageThreeComponent } from './page-three/page-three.component';
+import { SharedModule } from '../../shared/shared.module';
 
 const routes: Routes = [
   {
@@ -12,7 +11,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [CommonModule, RouterModule.forChild(routes), NgxRowAccordionModule],
+  imports: [RouterModule.forChild(routes), SharedModule],
   declarations: [PageThreeComponent],
 })
 export class Page3Module {}

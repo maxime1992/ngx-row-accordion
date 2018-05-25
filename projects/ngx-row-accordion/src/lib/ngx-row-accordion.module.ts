@@ -1,3 +1,4 @@
+import { NgxRowAccordionService } from './ngx-row-accordion.service';
 import { NgModule } from '@angular/core';
 import { NgxRowAccordionComponent } from './ngx-row-accordion.component';
 import { ModuleWithProviders } from '@angular/compiler/src/core';
@@ -16,7 +17,7 @@ export class NgxRowAccordionModule {
   static forRoot(): ModuleWithProviders {
     return {
       ngModule: NgxRowAccordionModule,
-      providers: [],
+      providers: [NgxRowAccordionService],
     };
   }
 }
