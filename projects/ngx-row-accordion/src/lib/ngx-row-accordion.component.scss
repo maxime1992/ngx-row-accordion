@@ -1,0 +1,20 @@
+.ngx-row-accordion {
+  max-width: 500px;
+  display: inline-block;
+  height: 100%;
+
+  .title {
+    padding: 16px;
+    writing-mode: vertical-rl;
+    text-orientation: sideways;
+    background-color: blue;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .body {
+    padding: 16px;
+    background-color: red;
+    overflow: auto;
+  }
+}
