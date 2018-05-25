@@ -13,7 +13,9 @@
     "build:lib:watch": "onchange 'projects/**/*.{ts,html,scss}' -- yarn run build:lib:dev",
     "prettier:base-files": "prettier \"./{e2e,cypress,src,projects}/**/*.{scss,ts}\"",
     "prettier:fix": "yarn run prettier:base-files --write",
-    "prettier:check": "yarn run prettier:base-files --list-different"
+    "prettier:check": "yarn run prettier:base-files --list-different",
+    "cy": "cypress open",
+    "cy:run": "cypress run"
   },
   "private": true,
   "dependencies": {
