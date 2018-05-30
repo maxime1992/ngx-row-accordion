@@ -1,7 +1,8 @@
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
-import { NgxRowAccordionService } from './ngx-row-accordion.service';
-import { tap, takeUntil } from 'rxjs/operators';
-import { merge, Subject } from 'rxjs';
+import { NgxRowAccordionService, AccordionState } from './ngx-row-accordion.service';
+import { tap, takeUntil, delay, map } from 'rxjs/operators';
+import { merge, Subject, Observable } from 'rxjs';
+import { v4 as uuid } from 'uuid';
 
 @Component({
   selector: 'ngx-row-accordion',
@@ -10,12 +11,12 @@ import { merge, Subject } from 'rxjs';
 })
 export class NgxRowAccordionComponent implements OnInit, OnDestroy {
   @Input() title: string;
-
   // name of the group this accordions belongs to
   @Input() group: string;
 
-  isFolded: boolean = false;
+  displayBody$: Observable<boolean>;
 
+  private id: string = uuid();
   private onDestroy$: Subject<void> = new Subject();
 
   constructor(private ngxRowAccordionService: NgxRowAccordionService) {}
@@ -25,37 +26,18 @@ export class NgxRowAccordionComponent implements OnInit, OnDestroy {
       throw new Error('[ngx-row-accordion] you should always pass a group when creating a row-accordion');
     }
 
-    const index = this.ngxRowAccordionService.addComponentToGroup(this, this.group);
+    this.ngxRowAccordionService.addComponentToGroup(this.id, this.group);
 
-    merge(
-      this.ngxRowAccordionService.onAddInGroup(this.group).pipe(tap(x => this.fold())),
-      this.ngxRowAccordionService.onRemoveInGroup(this.group).pipe(
-        tap(removedIndex => {
-          if (index === removedIndex - 1) {
-            this.unfold();
-          }
-        })
-      )
-    )
-      .pipe(takeUntil(this.onDestroy$))
-      .subscribe();
+    this.displayBody$ = this.ngxRowAccordionService.getState(this.id).pipe(map(x => !x.folded));
   }
 
   ngOnDestroy(): void {
     this.onDestroy$.complete();
 
-    this.ngxRowAccordionService.removeComponentFromGroup(this);
-  }
-
-  fold() {
-    this.isFolded = true;
-  }
-
-  unfold() {
-    this.isFolded = false;
+    this.ngxRowAccordionService.removeComponentFromGroup(this.id);
   }
 
   toggle() {
-    this.isFolded = !this.isFolded;
+    this.ngxRowAccordionService.toggle(this.id);
   }
 }

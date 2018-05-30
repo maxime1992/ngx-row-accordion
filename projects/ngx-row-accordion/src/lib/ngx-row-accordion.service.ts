@@ -1,88 +1,168 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
-import { filter, mapTo, map, delay } from 'rxjs/operators';
-import { NgxRowAccordionComponent } from './ngx-row-accordion.component';
+import { filter, mapTo, map, distinctUntilChanged, tap, delay } from 'rxjs/operators';
 import { mapChildrenIntoArray } from '@angular/router/src/url_tree';
 
-interface AccordionState {
+interface Dictionnary<T> {
+  [key: string]: T;
+}
+
+export interface AccordionState {
   folded: boolean;
 }
 
+type GroupName = string;
+type AccordionComponentId = string;
+
 interface AccordionGroup {
   // reference to every accordions of the group (to access them by reference)
-  map: Map<NgxRowAccordionComponent, AccordionState>;
-  // array containing the elements to keep track of the order (to access them by order)
-  array: NgxRowAccordionComponent[];
-  // subject to broadcast the index of new element added to that group
-  onAdd$: Subject<{ groupName: string; index: number }>;
-  // subject to broadcast the index of element removed from that group
-  onDelete$: Subject<{ groupName: string; index: number }>;
+  map: { [accordionComponentId: string]: AccordionState };
+  // array containing the elements IDs to keep track of the orde
+  array: AccordionComponentId[];
 }
 
 @Injectable({ providedIn: 'root' })
 export class NgxRowAccordionService {
-  private groups: Map<string, AccordionGroup> = new Map();
-  private componentToGroup: Map<NgxRowAccordionComponent, string> = new Map();
+  private groups$: BehaviorSubject<Dictionnary<AccordionGroup>> = new BehaviorSubject({});
+  private componentToGroup: Map<AccordionComponentId, GroupName> = new Map();
 
-  private addGroupIfDoesNotExists(groupName: string): void {
-    if (this.groups.has(groupName)) {
-      return;
+  public addComponentToGroup(accordionComponentId: string, groupName: string): void {
+    // get current group
+    const groups = this.groups$.getValue();
+    let group: AccordionGroup = groups[groupName];
+
+    // if the group does not exist yet, initialize it
+    if (!group) {
+      group = {
+        map: {},
+        array: [],
+      };
     }
 
-    const group: AccordionGroup = {
-      map: new Map(),
-      array: [],
-      onAdd$: new Subject(),
-      onDelete$: new Subject(),
-    };
-
-    this.groups.set(groupName, group);
-  }
-
-  addComponentToGroup(componentRef: NgxRowAccordionComponent, groupName: string): number {
-    this.addGroupIfDoesNotExists(groupName);
-
-    const group: AccordionGroup = this.groups.get(groupName);
-
-    if (group.map.has(componentRef)) {
+    // if the accordion ID is already registered, throw
+    if (!!group.map[accordionComponentId]) {
       throw new Error('A row-accordion should be registered only once');
     }
 
-    group.map.set(componentRef, { folded: false });
-    group.array.push(componentRef);
-    this.componentToGroup.set(componentRef, groupName);
+    // add the new accordion to the group
+    const groupWithNewAccordion: AccordionGroup = {
+      map: {
+        ...group.map,
+        [accordionComponentId]: { folded: false },
+      },
+      array: [...group.array, accordionComponentId],
+    };
 
-    const index = group.map.size - 1;
-    group.onAdd$.next({ groupName, index: index });
+    this.componentToGroup.set(accordionComponentId, groupName);
 
-    return index;
+    const index: number = groupWithNewAccordion.array.length - 1;
+
+    let newGroupWithNewState: Dictionnary<AccordionGroup> = {
+      ...this.groups$.getValue(),
+      [groupName]: groupWithNewAccordion,
+    };
+
+    // if adding an accordion which is not the first one, close the previous one
+    if (index > 0) {
+      const previousComponentId: string = groupWithNewAccordion.array[index - 1];
+
+      newGroupWithNewState = getNewState(newGroupWithNewState, groupName, previousComponentId, { folded: true });
+    }
+
+    this.groups$.next(newGroupWithNewState);
   }
 
-  removeComponentFromGroup(componentRef: NgxRowAccordionComponent) {
-    const groupName: string = this.componentToGroup.get(componentRef);
-    this.groups.get(groupName).map.delete(componentRef);
-    this.groups.get(groupName).array = this.groups.get(groupName).array.filter(x => x !== componentRef);
-    this.groups.get(groupName).onDelete$.next({ groupName, index: this.groups.get(groupName).map.size });
+  public removeComponentFromGroup(accordionComponentId: string): void {
+    const groups = this.groups$.getValue();
 
-    if (this.groups.get(groupName).map.size === 0) {
-      this.groups.get(groupName).onAdd$.complete();
-      this.groups.get(groupName).onDelete$.complete();
+    const groupName: string = this.componentToGroup.get(accordionComponentId);
+    const group: AccordionGroup = this.groups$.getValue()[groupName];
 
-      this.groups.delete(groupName);
+    const { [accordionComponentId]: omit, ...newMap } = group.map;
+
+    const newArray = group.array.filter(x => x !== accordionComponentId);
+
+    let newGroups: Dictionnary<AccordionGroup>;
+
+    const { [groupName]: currentGroup, ...remainingGroups } = groups;
+
+    if (newArray.length === 0) {
+      // if current group is now empty, remove the group by keeping only the others
+      newGroups = remainingGroups;
+    } else {
+      newGroups = {
+        ...remainingGroups,
+        [groupName]: {
+          map: newMap,
+          array: newArray,
+        },
+      };
+    }
+
+    this.groups$.next(newGroups);
+  }
+
+  public getState(accordionComponentId: string): Observable<AccordionState> {
+    const groupName: string = this.componentToGroup.get(accordionComponentId);
+
+    return this.groups$.pipe(
+      map(groups => groups[groupName]),
+      filter(group => !!group),
+      map(group => group.map[accordionComponentId]),
+      filter(group => !!group),
+      distinctUntilChanged(),
+      delay(0)
+    );
+  }
+
+  private updateState(accordionComponentId: string, newState: Partial<AccordionState>): void {
+    const groupName: string = this.componentToGroup.get(accordionComponentId);
+    const state: AccordionState = this._getState(accordionComponentId);
+
+    if (!!state) {
+      this.groups$.next(getNewState(this.groups$.getValue(), groupName, accordionComponentId, newState));
     }
   }
 
-  onAddInGroup(groupName: string): Observable<number> {
-    return this.groups
-      .get(groupName)
-      .onAdd$.asObservable()
-      .pipe(map(x => x.index), delay(0));
+  toggle(accordionComponentId: string): void {
+    const groupName: string = this.componentToGroup.get(accordionComponentId);
+    const state: AccordionState = this._getState(accordionComponentId);
+
+    if (!!state) {
+      const folded: boolean = state.folded;
+
+      this.updateState(accordionComponentId, { folded: !folded });
+    }
   }
 
-  onRemoveInGroup(groupName: string): Observable<number> {
-    return this.groups
-      .get(groupName)
-      .onDelete$.asObservable()
-      .pipe(map(x => x.index), delay(0));
+  private _getState(accordionComponentId: string): AccordionState {
+    const groupName: string = this.componentToGroup.get(accordionComponentId);
+    const groups = this.groups$.getValue();
+    const group: AccordionGroup = groups[groupName];
+    if (!!group) {
+      const state: AccordionState = group.map[accordionComponentId];
+      return state;
+    }
   }
+}
+
+function getNewState(
+  groups: Dictionnary<AccordionGroup>,
+  groupName: string,
+  accordionComponentId: string,
+  newState: Partial<AccordionState>
+): Dictionnary<AccordionGroup> {
+  return {
+    ...groups,
+    [groupName]: {
+      ...groups[groupName],
+      map: {
+        ...groups[groupName].map,
+        [accordionComponentId]: {
+          ...groups[groupName].map[accordionComponentId],
+          ...newState,
+        },
+      },
+    },
+  };
 }

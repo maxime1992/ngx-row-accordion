@@ -5,11 +5,10 @@
         {{ title }}
       </div>
 
-      <div class="body" *ngIf="!isFolded">
+      <div class="body" *ngIf="displayBody$ | async">
         <ng-content></ng-content>
       </div>
     </div>
-
   </div>
 
   <router-outlet></router-outlet>
