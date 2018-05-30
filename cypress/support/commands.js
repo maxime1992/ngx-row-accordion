@@ -24,9 +24,16 @@
 // -- This is will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
 
-Cypress.Commands.add('openFirstAccordion', { prevSubject: 'optional' }, (subject, options) => {
+Cypress.Commands.add('openFirstAccordionPrimary', { prevSubject: 'optional' }, (subject, options) => {
   cy
-    .get('a')
-    .contains('Open first')
+    .get('[data-go-to-page-1-primary]')
+    .contains('Go to first primary outlet')
+    .click();
+});
+
+Cypress.Commands.add('openFirstAccordionAux', { prevSubject: 'optional' }, (subject, options) => {
+  cy
+    .get('[data-go-to-page-4-aux]')
+    .contains('Go to first auxiliary outlet')
     .click();
 });
