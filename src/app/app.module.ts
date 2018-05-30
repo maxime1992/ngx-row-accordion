@@ -17,6 +17,34 @@ export function loadAuxAccordionsPageModule() {
   return AuxAccordionsPageModule;
 }
 
+// for now the build of the project (at least demo) does not work at all
+// when using lazy loading like the following
+// ----------------------------------------
+// {
+//   path: 'auxiliary-route',
+//   outlet: 'aux',
+//   component: AuxiliaryRouteProxyComponent,
+//   children: [
+//     {
+//       path: '',
+//       loadChildren: 'app/aux-accordions-page/aux-accordions-page.module#AuxAccordionsPageModule',
+//     },
+//   ],
+// },
+// {
+//   path: 'app',
+//   loadChildren: 'app/accordions-page/accordions-page.module#AccordionsPageModule',
+// },
+// ----------------------------------------
+// it's failing because of CLI issues
+// https://github.com/angular/angular-cli/issues/2601
+// https://github.com/angular/angular-cli/issues/10750
+// https://github.com/angular/angular-cli/issues/7332
+// when not using lazy loading, it doesn't work either
+// because of https://github.com/angular/angular-cli/issues/4192 ... ¯\_(ツ)_/¯
+// tried to explain the vicious circle here:
+// https://github.com/angular/angular-cli/issues/2601#issuecomment-393197794
+
 const routes: Routes = [
   {
     path: 'auxiliary-route',
