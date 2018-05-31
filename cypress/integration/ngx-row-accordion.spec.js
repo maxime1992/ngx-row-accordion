@@ -63,6 +63,26 @@ describe('Ngx row accordion', () => {
       .should('not.exist');
   });
 
+  it('should unfold previous accordion when closing one', () => {
+    cy.visit('/app/accordions/page1/page2/page3');
+
+    cy.contains('app-page-one .body', 'Page 1 content').should('not.exist');
+    cy.contains('app-page-two .body', 'Page 2 content').should('not.exist');
+    cy.contains('app-page-three .body', 'Page 3 content').should('exist');
+
+    cy.contains('Come back to page 2').click();
+
+    cy.contains('app-page-one .body', 'Page 1 content').should('not.exist');
+    cy.contains('app-page-two .body', 'Page 2 content').should('exist');
+    cy.contains('app-page-three .body', 'Page 3 content').should('not.exist');
+
+    cy.contains('Come back to page 1').click();
+
+    cy.contains('app-page-one .body', 'Page 1 content').should('exist');
+    cy.contains('app-page-two .body', 'Page 2 content').should('not.exist');
+    cy.contains('app-page-three .body', 'Page 3 content').should('not.exist');
+  });
+
   it('should be able to fold the first accordion after opening page 2, re-opening page 1, opening page 3', () => {
     cy.openFirstAccordionPrimary();
 

@@ -90,13 +90,18 @@ export class NgxRowAccordionService {
       // if current group is now empty, remove the group by keeping only the others
       newGroups = remainingGroups;
     } else {
-      newGroups = {
+      const indexCompToRemove: number = group.array.findIndex(id => id === accordionComponentId);
+      const idPreviousComp: string = group.array[indexCompToRemove - 1];
+
+      const newGroupsBeforeUnfoldingPrevious = {
         ...remainingGroups,
         [groupName]: {
           map: newMap,
           array: newArray,
         },
       };
+
+      newGroups = getNewState(newGroupsBeforeUnfoldingPrevious, groupName, idPreviousComp, { folded: false });
     }
 
     this.groups$.next(newGroups);
