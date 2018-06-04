@@ -12,15 +12,16 @@ install:
 script:
   - yarn run lint
   - yarn run test
-  # @todo `yarn run build` should be replace by `yarn run build:prod`
-  - yarn run build --progress=false --base-href "https://maxime1992.github.io/ngx-row-accordion/"
-  - sed -i 's/<base href="https:\/\/maxime1992.github.io\/ngx-row-accordion\/">/<base href="\/">/g' dist/index.html
+  - yarn run build:lib:prod
+  # @todo `yarn run build` should be replace by `yarn run build:demo:prod`
+  - yarn run build --progress false --base-href "https://maxime1992.github.io/ngx-row-accordion/"
+  - sed -i 's/<base href="https:\/\/maxime1992.github.io\/ngx-row-accordion\/">/<base href="\/">/g' dist/ngx-row-accordion-demo/index.html
   - cd ./dist/ngx-row-accordion-demo
-  - nohup http-server-spa . index.html 4230 &
+  - nohup http-server-spa . index.html 5200 &
   - cd ../..
   - sleep 5
   - yarn run cy:run
-  - sed -i 's/<base href="\/">/<base href="https:\/\/maxime1992.github.io\/ngx-row-accordion\/">/g' dist/index.html
+  - sed -i 's/<base href="\/">/<base href="https:\/\/maxime1992.github.io\/ngx-row-accordion\/">/g' dist/ngx-row-accordion-demo/index.html
 
 deploy:
   skip_cleanup: true
