@@ -32,4 +32,4 @@ deploy:
     branch: master
 
 after_success:
-  - test $TRAVIS_BRANCH = "master" && test $TRAVIS_PULL_REQUEST = "false" && npm run travis-deploy-once "npm run semantic-release"
+  - test $TRAVIS_BRANCH = "master" && test $TRAVIS_PULL_REQUEST = "false" && TRAVIS_JOB_NUMBER=WORKAROUND.1 npm run travis-deploy-once "npm run semantic-release"
