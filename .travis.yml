@@ -1,0 +1,31 @@
+sudo: false
+
+language: node_js
+node_js: 9
+
+cache: yarn
+
+install:
+  - yarn install
+  - yarn global add http-server-spa
+
+script:
+  - yarn run lint
+  - yarn run test
+  # @todo `yarn run build` should be replace by `yarn run build:prod`
+  - yarn run build --progress=false --base-href "https://maxime1992.github.io/ngx-row-accordion/"
+  - sed -i 's/<base href="https:\/\/maxime1992.github.io\/ngx-row-accordion\/">/<base href="\/">/g' dist/index.html
+  - cd ./dist/ngx-row-accordion-demo
+  - nohup http-server-spa . index.html 4230 &
+  - cd ../..
+  - sleep 5
+  - yarn run cy:run
+  - sed -i 's/<base href="\/">/<base href="https:\/\/maxime1992.github.io\/ngx-row-accordion\/">/g' dist/index.html
+
+deploy:
+  skip_cleanup: true
+  provider: pages
+  github_token: $GITHUB_TOKEN
+  local_dir: dist
+  on:
+    branch: master
