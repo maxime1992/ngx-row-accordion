@@ -1,6 +1,6 @@
 describe('Ngx row accordion', () => {
   beforeEach(() => {
-    cy.visit('localhost:5200');
+    cy.visit('/');
   });
 
   it('should not have any accordion visible at the beginning', () => {
@@ -25,20 +25,17 @@ describe('Ngx row accordion', () => {
 
     cy.location().should(loc => expect(loc.pathname).to.equal('/app/accordions/page1'));
 
-    cy
-      .get('app-page-one')
+    cy.get('app-page-one')
       .should('exist')
       .contains('.body a', 'Open page 2');
 
     cy.get('app-page-one .title').click();
 
-    cy
-      .get('app-page-one')
+    cy.get('app-page-one')
       .contains('Page one content')
       .should('not.exist');
 
-    cy
-      .get('app-page-one .title')
+    cy.get('app-page-one .title')
       .contains('Page 1 title')
       .click();
 
@@ -48,8 +45,7 @@ describe('Ngx row accordion', () => {
   it('should fold previous accordion when opening a new one', () => {
     cy.openFirstAccordionPrimary();
 
-    cy
-      .get('app-page-one .body a')
+    cy.get('app-page-one .body a')
       .as('linkToOpenPage2')
       .click();
 
@@ -57,14 +53,19 @@ describe('Ngx row accordion', () => {
 
     cy.get('app-page-one .title').contains('Page 1 title');
 
-    cy
-      .get('app-page-one .body')
+    cy.get('app-page-one .body')
       .contains('Page 1 content')
       .should('not.exist');
   });
 
   it('should unfold previous accordion when closing one', () => {
-    cy.visit('/app/accordions/page1/page2/page3');
+    cy.openFirstAccordionPrimary();
+    cy.contains('Open page 2').click();
+    cy.contains('Open page 3').click();
+
+    // going to the page with `cy.visit('/app/accordions/page1/page2/page3')` would have been easier but ends up
+    // in production build (only) with the following error
+    // `Blocked a frame with origin "http://localhost:5200" from accessing a cross-origin frame`
 
     cy.contains('app-page-one .body', 'Page 1 content').should('not.exist');
     cy.contains('app-page-two .body', 'Page 2 content').should('not.exist');
@@ -88,37 +89,31 @@ describe('Ngx row accordion', () => {
 
     cy.location().should(loc => expect(loc.pathname).to.equal('/app/accordions/page1'));
 
-    cy
-      .get('app-page-one .body a')
+    cy.get('app-page-one .body a')
       .contains('Open page 2')
       .click();
 
     cy.location().should(loc => expect(loc.pathname).to.equal('/app/accordions/page1/page2'));
 
-    cy
-      .get('app-page-one .title')
+    cy.get('app-page-one .title')
       .contains('Page 1 title')
       .click();
     cy.get('app-page-one .body').contains('Page 1 content');
 
-    cy
-      .get('app-page-two .body a')
+    cy.get('app-page-two .body a')
       .contains('Open page 3')
       .click();
 
     cy.location().should(loc => expect(loc.pathname).to.equal('/app/accordions/page1/page2/page3'));
 
-    cy
-      .get('app-page-two .body')
+    cy.get('app-page-two .body')
       .contains('Page 2 content')
       .should('not.exist');
 
-    cy
-      .get('app-page-one .title')
+    cy.get('app-page-one .title')
       .contains('Page 1 title')
       .click();
-    cy
-      .get('app-page-one .body')
+    cy.get('app-page-one .body')
       .contains('Page 1 content')
       .should('not.exist');
   });
@@ -128,20 +123,17 @@ describe('Ngx row accordion', () => {
 
     cy.location().should(loc => expect(loc.pathname).to.equal('/app/accordions/page1'));
 
-    cy
-      .get('app-page-one .body a')
+    cy.get('app-page-one .body a')
       .contains('Open page 2')
       .click();
 
     cy.location().should(loc => expect(loc.pathname).to.equal('/app/accordions/page1/page2'));
 
-    cy
-      .get('app-page-one .title')
+    cy.get('app-page-one .title')
       .contains('Page 1 title')
       .click();
 
-    cy
-      .get('app-page-two .body a')
+    cy.get('app-page-two .body a')
       .contains('Open page 3')
       .click();
 
@@ -159,8 +151,7 @@ describe('Ngx row accordion', () => {
 
     cy.location().should(loc => expect(loc.pathname).to.equal('/app/accordions'));
 
-    cy
-      .get('app-accordions-page > .accordions-container')
+    cy.get('app-accordions-page > .accordions-container')
       .children()
       .should('have.length', 1);
   });
@@ -196,11 +187,9 @@ describe('Ngx row accordion', () => {
 
     // open page 1 (primary)
     cy.openFirstAccordionPrimary();
-    cy
-      .location()
-      .should(loc =>
-        expect(loc.pathname).to.equal('/app/accordions/page1(aux:auxiliary-route/accordions/page4/page5)')
-      );
+    cy.location().should(loc =>
+      expect(loc.pathname).to.equal('/app/accordions/page1(aux:auxiliary-route/accordions/page4/page5)')
+    );
     cy.get('app-page-one');
     cy.get('app-page-two').should('not.exist');
     cy.get('app-page-three').should('not.exist');
@@ -210,11 +199,9 @@ describe('Ngx row accordion', () => {
 
     // open page 2 (primary)
     cy.contains('Open page 2').click();
-    cy
-      .location()
-      .should(loc =>
-        expect(loc.pathname).to.equal('/app/accordions/page1/page2(aux:auxiliary-route/accordions/page4/page5)')
-      );
+    cy.location().should(loc =>
+      expect(loc.pathname).to.equal('/app/accordions/page1/page2(aux:auxiliary-route/accordions/page4/page5)')
+    );
     cy.get('app-page-one');
     cy.get('app-page-two');
     cy.get('app-page-three').should('not.exist');
@@ -224,9 +211,9 @@ describe('Ngx row accordion', () => {
 
     // close all primary
     cy.get('[data-close-all-primary]').click();
-    cy
-      .location()
-      .should(loc => expect(loc.pathname).to.equal('/app/accordions(aux:auxiliary-route/accordions/page4/page5)'));
+    cy.location().should(loc =>
+      expect(loc.pathname).to.equal('/app/accordions(aux:auxiliary-route/accordions/page4/page5)')
+    );
     cy.get('app-page-one').should('not.exist');
     cy.get('app-page-two').should('not.exist');
     cy.get('app-page-three').should('not.exist');
