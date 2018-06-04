@@ -1,5 +1,3 @@
 {
-  "release": {
-    "pkgRoot": "dist/ngx-row-accordion"
-  }
+  "pkgRoot": "dist/ngx-row-accordion"
 }
