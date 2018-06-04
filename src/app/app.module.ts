@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AppComponent } from './app.component';
-import { CommonModule } from '@angular/common';
+import { CommonModule, LocationStrategy, HashLocationStrategy } from '@angular/common';
 import { FlexModule } from '@angular/flex-layout';
 import { AccordionsPageModule } from './accordions-page/accordions-page.module';
 import { AuxAccordionsPageModule } from './aux-accordions-page/aux-accordions-page.module';
@@ -67,7 +67,12 @@ const routes: Routes = [
 @NgModule({
   declarations: [AppComponent, AuxiliaryRouteProxyComponent],
   imports: [BrowserModule, RouterModule.forRoot(routes), SharedModule, FlexModule],
-  providers: [],
+  providers: [
+    {
+      provide: LocationStrategy,
+      useClass: HashLocationStrategy,
+    },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
