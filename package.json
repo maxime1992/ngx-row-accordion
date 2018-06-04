@@ -7,7 +7,7 @@
     "build": "ng build",
     "test:demo": "ng test ngx-row-accordion-demo",
     "test:lib": "ng test ngx-row-accordion",
-    "test": "yarn run test:demo && yarn run test:lib",
+    "test": "yarn run test:demo --watch false && yarn run test:lib --watch false",
     "lint:demo": "ng lint ngx-row-accordion-demo",
     "lint:demo:fix": "yarn run lint:demo --fix",
     "lint:lib": "ng lint ngx-row-accordion",
