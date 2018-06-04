@@ -1,6 +1,6 @@
 {
   "name": "ngx-row-accordion-demo",
-  "version": "0.0.0",
+  "version": "0.0.0-development",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -22,7 +22,9 @@
     "prettier:fix": "yarn run prettier:base-files --write",
     "prettier:check": "yarn run prettier:base-files --list-different",
     "cy": "cypress open",
-    "cy:run": "cypress run"
+    "cy:run": "cypress run",
+    "travis-deploy-once": "travis-deploy-once",
+    "semantic-release": "semantic-release"
   },
   "private": true,
   "dependencies": {
@@ -71,6 +73,12 @@
     "tsickle": ">=0.25.5",
     "tslib": "1.7.1",
     "tslint": "5.9.1",
-    "typescript": "2.7.2"
+    "typescript": "2.7.2",
+    "travis-deploy-once": "5.0.0",
+    "semantic-release": "15.5.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/maxime1992/ngx-row-accordion.git"
   }
 }
