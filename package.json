@@ -8,6 +8,7 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
+    "build:demo:prod": "ng build --prod",
     "build:lib:dev": "ng build ngx-row-accordion",
     "build:lib:prod": "ng build ngx-row-accordion --prod",
     "build:lib:watch": "onchange 'projects/**/*.{ts,html,scss}' -- yarn run build:lib:dev",
