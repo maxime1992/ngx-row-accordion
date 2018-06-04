@@ -76,6 +76,11 @@ export class NgxRowAccordionService {
     const groups = this.groups$.getValue();
 
     const groupName: string = this.componentToGroup.get(accordionComponentId);
+
+    if (!groupName) {
+      return;
+    }
+
     const group: AccordionGroup = this.groups$.getValue()[groupName];
 
     const { [accordionComponentId]: omit, ...newMap } = group.map;
