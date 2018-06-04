@@ -9,10 +9,7 @@ describe('NgxRowAccordionService', () => {
     });
   });
 
-  it(
-    'should be created',
-    inject([NgxRowAccordionService], (service: NgxRowAccordionService) => {
-      expect(service).toBeTruthy();
-    })
-  );
+  it('should be created', inject([NgxRowAccordionService], (service: NgxRowAccordionService) => {
+    expect(service).toBeTruthy();
+  }));
 });
