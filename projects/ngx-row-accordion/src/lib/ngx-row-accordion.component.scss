@@ -1,5 +1,4 @@
 .ngx-row-accordion {
-  max-width: 500px;
   display: inline-block;
   height: 100%;
 
@@ -7,14 +6,14 @@
     padding: 16px;
     writing-mode: vertical-rl;
     text-orientation: sideways;
-    background-color: blue;
+    background-color: #d8d8d8;
     cursor: pointer;
     user-select: none;
   }
 
   .body {
     padding: 16px;
-    background-color: red;
+    background-color: #f3f3f3;
     overflow: auto;
   }
 }
