@@ -5,6 +5,12 @@ Accordion(s) integrated with your (Angular) routes.
 *Demo with 2 different accordion groups and primary + auxiliary routes*
 
 
+## Install
+
+Install the [npm package](https://www.npmjs.com/package/ngx-row-accordion):
+
+`yarn add ngx-row-accordion`
+
 ## Setup
 From `AppModule`:
 ```diff
