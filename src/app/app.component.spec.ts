@@ -1,23 +1,21 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { NgxRowAccordionService } from './ngx-row-accordion.service';
 
-import { NgxRowAccordionComponent } from './ngx-row-accordion.component';
+import { AppComponent } from './app.component';
 
-describe('NgxRowAccordionComponent', () => {
-  let component: NgxRowAccordionComponent;
-  let fixture: ComponentFixture<NgxRowAccordionComponent>;
+describe('AppComponent', () => {
+  let component: AppComponent;
+  let fixture: ComponentFixture<AppComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [RouterTestingModule],
-      declarations: [NgxRowAccordionComponent],
-      providers: [NgxRowAccordionService]
+      declarations: [AppComponent],
     }).compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(NgxRowAccordionComponent);
+    fixture = TestBed.createComponent(AppComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
