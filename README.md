@@ -65,6 +65,19 @@ Style the component the way you want (example):
 +}
 ```
 
+**Note**:  
+If you want to style `ngx-row-accordion` globally, put those styles into `src/styles.scss`.
+
+If you want to style accordions inside a given component, you should use `::ng-deep` like the following:
+
+```diff
++ngx-row-accordion ::ng-deep {
++  ...
++}
+```
+
+*Learn more about view encapsulation [here](https://angular.io/guide/component-styles#view-encapsulation) and `::ng-deep` [here](https://angular.io/guide/component-styles#deprecated-deep--and-ng-deep).*
+
 ## Use
 ```html
 <ngx-row-accordion title="Your title goes here" group="the-group-name">
