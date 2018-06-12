@@ -40,6 +40,31 @@ From your `SharedModule`:
 export class SharedModule {}
 ```
 
+Style the component the way you want (example):
+```diff
++ngx-row-accordion {
++  .ngx-row-accordion {
++    display: inline-block;
++    height: 100%;
++
++    .title {
++      padding: 16px;
++      writing-mode: vertical-rl;
++      text-orientation: sideways;
++      background-color: #d8d8d8;
++      cursor: pointer;
++      user-select: none;
++    }
++
++    .body {
++      padding: 16px;
++      background-color: #f3f3f3;
++      overflow: auto;
++    }
++  }
++}
+```
+
 ## Use
 ```html
 <ngx-row-accordion title="Your title goes here" group="the-group-name">
