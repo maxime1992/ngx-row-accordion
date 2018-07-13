@@ -1,7 +1,7 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { NgxRowAccordionModule } from 'ngx-row-accordion';
+import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { NgxRowAccordionModule } from 'ngx-row-accordion';
 
 const shared = [CommonModule, RouterModule, NgxRowAccordionModule];
 

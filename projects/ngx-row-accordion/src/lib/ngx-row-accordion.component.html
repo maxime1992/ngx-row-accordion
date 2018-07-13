@@ -5,7 +5,7 @@
         {{ title }}
       </div>
 
-      <div class="body" *ngIf="displayBody$ | async">
+      <div class="body" [hidden]="!(displayBody$ | async)">
         <ng-content></ng-content>
       </div>
     </div>

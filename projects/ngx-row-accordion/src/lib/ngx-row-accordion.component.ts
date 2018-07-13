@@ -1,8 +1,8 @@
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
-import { NgxRowAccordionService, AccordionState } from './ngx-row-accordion.service';
-import { tap, takeUntil, delay, map } from 'rxjs/operators';
-import { merge, Subject, Observable } from 'rxjs';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Observable, Subject } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { v4 as uuid } from 'uuid';
+import { NgxRowAccordionService } from './ngx-row-accordion.service';
 
 @Component({
   selector: 'ngx-row-accordion',
@@ -13,6 +13,8 @@ export class NgxRowAccordionComponent implements OnInit, OnDestroy {
   @Input() title: string;
   // name of the group this accordions belongs to
   @Input() group: string;
+
+  @Input() collapsePrevious = true;
 
   displayBody$: Observable<boolean>;
 
@@ -26,7 +28,7 @@ export class NgxRowAccordionComponent implements OnInit, OnDestroy {
       throw new Error('[ngx-row-accordion] you should always pass a group when creating a row-accordion');
     }
 
-    this.ngxRowAccordionService.addComponentToGroup(this.id, this.group);
+    this.ngxRowAccordionService.addComponentToGroup(this.id, this.group, this.collapsePrevious);
 
     this.displayBody$ = this.ngxRowAccordionService.getState(this.id).pipe(map(x => !x.folded));
   }

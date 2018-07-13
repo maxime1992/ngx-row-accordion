@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
-import { filter, mapTo, map, distinctUntilChanged, tap, delay } from 'rxjs/operators';
-import { mapChildrenIntoArray } from '@angular/router/src/url_tree';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { delay, distinctUntilChanged, filter, map } from 'rxjs/operators';
 
-interface Dictionnary<T> {
+interface Dictionary<T> {
   [key: string]: T;
 }
 
 export interface AccordionState {
   folded: boolean;
+  collapsePrevious: boolean;
 }
 
 type GroupName = string;
@@ -17,16 +17,16 @@ type AccordionComponentId = string;
 interface AccordionGroup {
   // reference to every accordions of the group (to access them by reference)
   map: { [accordionComponentId: string]: AccordionState };
-  // array containing the elements IDs to keep track of the orde
+  // array containing the elements IDs to keep track of the order
   array: AccordionComponentId[];
 }
 
 @Injectable({ providedIn: 'root' })
 export class NgxRowAccordionService {
-  private groups$: BehaviorSubject<Dictionnary<AccordionGroup>> = new BehaviorSubject({});
+  private groups$: BehaviorSubject<Dictionary<AccordionGroup>> = new BehaviorSubject({});
   private componentToGroup: Map<AccordionComponentId, GroupName> = new Map();
 
-  public addComponentToGroup(accordionComponentId: string, groupName: string): void {
+  public addComponentToGroup(accordionComponentId: string, groupName: string, collapsePrevious = true): void {
     // get current group
     const groups = this.groups$.getValue();
     let group: AccordionGroup = groups[groupName];
@@ -48,7 +48,7 @@ export class NgxRowAccordionService {
     const groupWithNewAccordion: AccordionGroup = {
       map: {
         ...group.map,
-        [accordionComponentId]: { folded: false },
+        [accordionComponentId]: { folded: false, collapsePrevious },
       },
       array: [...group.array, accordionComponentId],
     };
@@ -57,7 +57,7 @@ export class NgxRowAccordionService {
 
     const index: number = groupWithNewAccordion.array.length - 1;
 
-    let newGroupWithNewState: Dictionnary<AccordionGroup> = {
+    let newGroupWithNewState: Dictionary<AccordionGroup> = {
       ...this.groups$.getValue(),
       [groupName]: groupWithNewAccordion,
     };
@@ -66,7 +66,11 @@ export class NgxRowAccordionService {
     if (index > 0) {
       const previousComponentId: string = groupWithNewAccordion.array[index - 1];
 
-      newGroupWithNewState = getNewState(newGroupWithNewState, groupName, previousComponentId, { folded: true });
+      const closePrevious = newGroupWithNewState[groupName].map[previousComponentId].collapsePrevious;
+
+      newGroupWithNewState = getNewState(newGroupWithNewState, groupName, previousComponentId, {
+        folded: closePrevious,
+      });
     }
 
     this.groups$.next(newGroupWithNewState);
@@ -87,7 +91,7 @@ export class NgxRowAccordionService {
 
     const newArray = group.array.filter(x => x !== accordionComponentId);
 
-    let newGroups: Dictionnary<AccordionGroup>;
+    let newGroups: Dictionary<AccordionGroup>;
 
     const { [groupName]: currentGroup, ...remainingGroups } = groups;
 
@@ -157,11 +161,11 @@ export class NgxRowAccordionService {
 }
 
 function getNewState(
-  groups: Dictionnary<AccordionGroup>,
+  groups: Dictionary<AccordionGroup>,
   groupName: string,
   accordionComponentId: string,
   newState: Partial<AccordionState>
-): Dictionnary<AccordionGroup> {
+): Dictionary<AccordionGroup> {
   return {
     ...groups,
     [groupName]: {
