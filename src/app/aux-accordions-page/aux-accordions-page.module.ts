@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
-import { AuxAccordionsPageComponent } from './aux-accordions-page.component';
-import { PageFourComponent } from './page-four/page-four.component';
-import { PageFiveComponent } from './page-five/page-five.component';
-import { PageSixComponent } from './page-six/page-six.component';
+import { RouterModule, Routes } from '@angular/router';
 import { SharedModule } from '../shared/shared.module';
-import { Routes, RouterModule } from '@angular/router';
+import { AuxAccordionsPageComponent } from './aux-accordions-page.component';
+import { PageFiveComponent } from './page-five/page-five.component';
+import { PageFourComponent } from './page-four/page-four.component';
+import { PageSixComponent } from './page-six/page-six.component';
 
 const routes: Routes = [
   {

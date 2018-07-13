@@ -1,10 +1,10 @@
-import { PageOneComponent } from './page-one/page-one.component';
 import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
 import { NgxRowAccordionModule } from 'ngx-row-accordion';
 import { AccordionsPageComponent } from './accordions-page.component';
-import { Routes, RouterModule } from '@angular/router';
-import { PageTwoComponent } from './page-two/page-two.component';
+import { PageOneComponent } from './page-one/page-one.component';
 import { PageThreeComponent } from './page-three/page-three.component';
+import { PageTwoComponent } from './page-two/page-two.component';
 
 const routes: Routes = [
   {

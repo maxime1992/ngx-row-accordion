@@ -1,13 +1,13 @@
-import { SharedModule } from './shared/shared.module';
-import { BrowserModule } from '@angular/platform-browser';
+import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { AppComponent } from './app.component';
-import { CommonModule, LocationStrategy, HashLocationStrategy } from '@angular/common';
 import { FlexModule } from '@angular/flex-layout';
+import { BrowserModule } from '@angular/platform-browser';
+import { RouterModule, Routes } from '@angular/router';
 import { AccordionsPageModule } from './accordions-page/accordions-page.module';
+import { AppComponent } from './app.component';
 import { AuxAccordionsPageModule } from './aux-accordions-page/aux-accordions-page.module';
 import { AuxiliaryRouteProxyComponent } from './auxiliary-route-proxy/auxiliary-route-proxy.component';
+import { SharedModule } from './shared/shared.module';
 
 export function loadAccordionsPageModule() {
   return AccordionsPageModule;
