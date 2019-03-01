@@ -1,0 +1,16 @@
+:host {
+  display: flex;
+  height: 100%;
+  overflow: hidden;
+}
+
+.ngx-row-accordion {
+  display: flex;
+  width: 500px;
+  overflow: hidden;
+}
+
+.title {
+  position: relative;
+  z-index: 20;
+}

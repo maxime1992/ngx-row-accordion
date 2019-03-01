@@ -3,11 +3,34 @@ import { Observable, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { v4 as uuid } from 'uuid';
 import { NgxRowAccordionService } from './ngx-row-accordion.service';
+import { trigger, transition, state, animate, style } from '@angular/animations';
 
 @Component({
   selector: 'ngx-row-accordion',
   templateUrl: './ngx-row-accordion.component.html',
   styleUrls: ['./ngx-row-accordion.component.scss'],
+  animations: [
+    trigger('openClose', [
+      state('open', style({
+        transform: 'translateX(0)'
+      })),
+      state('closed', style({
+        transform: 'translateX(-100%)'
+      })),
+      state('margin-shift-open', style({
+        'margin-right': '0px'
+      })),
+      state('margin-shift-closed', style({
+        'margin-right': '-450px'
+      })),
+      transition('open <=> closed', [
+        animate('0.3s')
+      ]),
+      transition('margin-shift-open <=> margin-shift-closed', [
+        animate('0.3s')
+      ]),
+    ]),
+  ],
 })
 export class NgxRowAccordionComponent implements OnInit, OnDestroy {
   @Input() title: string;

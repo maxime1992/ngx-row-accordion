@@ -1,15 +1,11 @@
-<div fxFill fxLayout="row">
-  <div class="ngx-row-accordion">
-    <div fxLayout="row" class="ngx-row-accordion">
-      <div class="title" (click)="toggle()">
-        {{ title }}
-      </div>
-
-      <div class="body" [hidden]="!(displayBody$ | async)">
-        <ng-content></ng-content>
-      </div>
-    </div>
+<div class="ngx-row-accordion" [@openClose]="(displayBody$ | async) ? 'margin-shift-open' : 'margin-shift-closed'">
+  <div class="title" (click)="toggle()">
+    {{ title }}
   </div>
 
-  <router-outlet></router-outlet>
+  <div class="body" [@openClose]="(displayBody$ | async) ? 'open' : 'closed'">
+    <ng-content></ng-content>
+  </div>
 </div>
+
+<router-outlet></router-outlet>
