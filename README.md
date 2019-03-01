@@ -120,6 +120,8 @@ Project is split into 2 parts:
 * `src/app`: The demo of the library
 * `projects/ngx-row-accordion`: The library itself
 
+## Library
+`yarn run build:lib:prod`
 
 ## Development server
 Run `yarn run start` to start a dev server.  
@@ -130,9 +132,6 @@ The app will automatically reload if you change any of the source files.
 ## Build
 ### Demo app
 `yarn run build:demo:prod`
-
-### Library
-`yarn run build:lib:prod`
 
 
 ## Running unit tests

@@ -2,6 +2,7 @@ import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FlexModule } from '@angular/flex-layout';
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule, Routes } from '@angular/router';
 import { AccordionsPageModule } from './accordions-page/accordions-page.module';
 import { AppComponent } from './app.component';
@@ -66,7 +67,7 @@ const routes: Routes = [
 
 @NgModule({
   declarations: [AppComponent, AuxiliaryRouteProxyComponent],
-  imports: [BrowserModule, RouterModule.forRoot(routes), SharedModule, FlexModule],
+  imports: [BrowserModule, BrowserAnimationsModule, RouterModule.forRoot(routes), SharedModule, FlexModule],
   providers: [
     {
       provide: LocationStrategy,

@@ -1,4 +1,4 @@
-<ngx-row-accordion title="Page 1 title" group="great-accordions-group">
+<ngx-row-accordion (click)="toggle()" [@openClose]="isOpen ? 'open' : 'closed'" title="Page 1 title" group="great-accordions-group">
   Page 1 content
 
   <p>
