@@ -11,24 +11,33 @@ import { trigger, transition, state, animate, style } from '@angular/animations'
   styleUrls: ['./ngx-row-accordion.component.scss'],
   animations: [
     trigger('openClose', [
-      state('open', style({
-        transform: 'translateX(0)'
-      })),
-      state('closed', style({
-        transform: 'translateX(-100%)'
-      })),
-      state('margin-shift-open', style({
-        'margin-right': '0px'
-      })),
-      state('margin-shift-closed', style({
-        'margin-right': '-450px'
-      })),
-      transition('open <=> closed', [
-        animate('0.3s')
-      ]),
-      transition('margin-shift-open <=> margin-shift-closed', [
-        animate('0.3s')
-      ]),
+      state(
+        'open',
+        style({
+          transform: 'translateX(0)',
+        })
+      ),
+      state(
+        'closed',
+        style({
+          transform: 'translateX(-100%)',
+        })
+      ),
+      state(
+        'position-shift-open',
+        style({
+          'margin-right': '0px',
+        })
+      ),
+      state(
+        'position-shift-closed',
+        style({
+          /* (negative) panel width minus the title width */
+          'margin-right': '-450px',
+        })
+      ),
+      transition('open <=> closed', [animate('0.4s ease-out')]),
+      transition('position-shift-open <=> position-shift-closed', [animate('0.4s ease-out')]),
     ]),
   ],
 })

@@ -6,11 +6,15 @@
 
 .ngx-row-accordion {
   display: flex;
+  // a fixed width is needed to ensure the
+  // panel animates to a certain size
   width: 500px;
   overflow: hidden;
 }
 
 .title {
   position: relative;
-  z-index: 20;
+  // z-index is required to ensure the title remains on
+  // top of the body panel during the animation transition
+  z-index: 5;
 }
