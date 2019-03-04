@@ -4,6 +4,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 
 import { NgxRowAccordionComponent } from './ngx-row-accordion.component';
 import { NgxRowAccordionService } from './ngx-row-accordion.service';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 @Component({
   selector: 'app-host',
@@ -21,7 +22,7 @@ describe('NgxRowAccordionComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule],
+      imports: [RouterTestingModule, NoopAnimationsModule],
       declarations: [HostComponent, NgxRowAccordionComponent],
       providers: [NgxRowAccordionService],
     }).compileComponents();

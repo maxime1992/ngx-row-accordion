@@ -18,3 +18,8 @@
   // top of the body panel during the animation transition
   z-index: 5;
 }
+
+.hidden {
+  visibility: hidden;
+  transition: visibility 0s linear 0.4s;
+}

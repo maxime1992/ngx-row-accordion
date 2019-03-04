@@ -3,7 +3,7 @@
     {{ title }}
   </div>
 
-  <div class="body" [@openClose]="(displayBody$ | async) ? 'open' : 'closed'">
+  <div class="body" [@openClose]="(displayBody$ | async) ? 'open' : 'closed'" [class.hidden]="!(displayBody$ | async)">
     <ng-content></ng-content>
   </div>
 </div>
