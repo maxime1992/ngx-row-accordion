@@ -6091,12 +6091,6 @@ ng-packagr@3.0.1:
     uglify-js "^3.0.7"
     update-notifier "^2.3.0"
 
-ngx-row-accordion@^2.1.0:
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/ngx-row-accordion/-/ngx-row-accordion-2.1.0.tgz#57a842dfdc554f26a6ca906b97ca0611f36c9c91"
-  dependencies:
-    tslib "^1.9.0"
-
 nice-try@^1.0.4:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/nice-try/-/nice-try-1.0.4.tgz#d93962f6c52f2c1558c0fbda6d512819f1efe1c4"
