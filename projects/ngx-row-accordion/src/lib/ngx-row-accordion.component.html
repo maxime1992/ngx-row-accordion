@@ -1,11 +1,11 @@
-<div fxFill fxLayout="row">
-  <div class="ngx-row-accordion">
-    <div fxLayout="row" class="ngx-row-accordion">
-      <div class="title" (click)="toggle()">
+<div class="ngx-row-accordion-container">
+  <div class="ngx-row-accordion level-one">
+    <div class="ngx-row-accordion level-two">
+      <div class="title" (click)="toggle()" [ngClass]="(isPanelOpen$ | async) ? 'close-panel' : 'open-panel'">
         {{ title }}
       </div>
 
-      <div class="body" [hidden]="!(displayBody$ | async)">
+      <div class="body" [hidden]="!(isPanelOpen$ | async)">
         <ng-content></ng-content>
       </div>
     </div>

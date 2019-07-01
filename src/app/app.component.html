@@ -1,5 +1,5 @@
-<div fxLayout="row">
-  <div fxFlex>
+<div class="level-one">
+  <div class="level-two">
     <h1>Main route</h1>
     <button routerLink="app/accordions/page1" type="button" data-go-to-page-1-primary>
       Go to first primary outlet
@@ -10,7 +10,7 @@
     </button>
   </div>
 
-  <div fxFlex>
+  <div class="level-two">
     <h1>Aux route</h1>
     <button [routerLink]="[{outlets: {'aux': ['auxiliary-route', 'accordions', 'page4']}}]" type="button" data-go-to-page-4-aux>
       Go to first auxiliary outlet
@@ -22,12 +22,12 @@
   </div>
 </div>
 
-<div fxLayout="row">
-  <div fxFlex>
+<div class="level-one">
+  <div class="level-two">
     <router-outlet></router-outlet>
   </div>
 
-  <div fxFlex>
+  <div class="level-two">
     <router-outlet name="aux"></router-outlet>
   </div>
 </div>
