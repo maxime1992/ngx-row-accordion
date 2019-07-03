@@ -9,12 +9,12 @@
     "url": "https://github.com/maxime1992/ngx-row-accordion.git"
   },
   "peerDependencies": {
-    "@angular/common": "^6.0.0",
-    "@angular/core": "^6.0.0",
-    "@angular/flex-layout": "^5.0.0-beta.14",
-    "@angular/cdk": "^6.0.0",
-    "@angular/material": "^6.0.0",
-    "rxjs-compat": "^6.0.0",
+    "@angular/common": "^8.0.0",
+    "@angular/core": "^8.0.0",
+    "@angular/flex-layout": "^8.0.0",
+    "@angular/cdk": "^8.0.0",
+    "@angular/material": "^8.0.0",
+    "rxjs": "^6.0.0",
     "uuid": "^3.0.0"
   }
 }

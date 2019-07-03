@@ -42,7 +42,6 @@
     "@angular/router": "8.0.0",
     "core-js": "2.6.5",
     "rxjs": "6.5.2",
-    "rxjs-compat": "6.5.2",
     "uuid": "3.3.2",
     "zone.js": "0.9.1"
   },
