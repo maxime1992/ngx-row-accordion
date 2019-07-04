@@ -16,7 +16,7 @@ export class NgxRowAccordionComponent implements OnInit, OnDestroy {
 
   @Input() collapsePrevious = true;
 
-  displayBody$: Observable<boolean>;
+  isPanelOpen$: Observable<boolean>;
 
   private id: string = uuid();
   private onDestroy$: Subject<void> = new Subject();
@@ -30,7 +30,7 @@ export class NgxRowAccordionComponent implements OnInit, OnDestroy {
 
     this.ngxRowAccordionService.addComponentToGroup(this.id, this.group, this.collapsePrevious);
 
-    this.displayBody$ = this.ngxRowAccordionService.getState(this.id).pipe(map(x => !x.folded));
+    this.isPanelOpen$ = this.ngxRowAccordionService.getState(this.id).pipe(map(x => !x.folded));
   }
 
   ngOnDestroy(): void {
